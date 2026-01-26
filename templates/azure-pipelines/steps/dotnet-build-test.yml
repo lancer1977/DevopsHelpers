@@ -1,0 +1,13 @@
+parameters:
+  solution: '.'
+  configuration: 'Release'
+
+steps:
+- bash: |
+    set -euo pipefail
+    chmod +x scripts/dotnet/dotnet_build_test.sh
+    ./scripts/dotnet/dotnet_build_test.sh
+  displayName: dotnet build + test
+  env:
+    DOTNET_SOLUTION: ${{ parameters.solution }}
+    DOTNET_CONFIGURATION: ${{ parameters.configuration }}

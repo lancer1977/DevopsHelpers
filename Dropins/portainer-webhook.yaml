@@ -1,0 +1,1 @@
+- script: curl -fsS -X POST "$PORTAINER_WEBHOOK_BASE/${WEBHOOK_ID}"

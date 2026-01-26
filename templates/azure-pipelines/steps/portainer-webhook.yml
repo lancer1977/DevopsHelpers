@@ -1,0 +1,11 @@
+parameters:
+  webhookVar: 'PORTAINER_WEBHOOK_URL'   # pipeline variable name containing URL
+
+steps:
+- bash: |
+    set -euo pipefail
+    chmod +x scripts/portainer/redeploy.sh
+    ./scripts/portainer/redeploy.sh
+  displayName: Trigger Portainer redeploy
+  env:
+    PORTAINER_WEBHOOK_URL: $(${{ parameters.webhookVar }})

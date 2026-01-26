@@ -1,0 +1,27 @@
+# Example: Consuming toolkit templates from Azure DevOps Pipeline
+# Assumes you have a Variable Group named `Portainer-Prod` with secret `PORTAINER_WEBHOOK_URL`
+
+trigger:
+  branches:
+    include:
+      - main
+
+resources:
+  repositories:
+    - repository: toolkit
+      type: github
+      name: YourGitHubOrg/devops-toolkit
+      ref: refs/tags/v1.0.0
+      endpoint: github-connection
+
+variables:
+- group: Portainer-Prod
+
+jobs:
+- template: templates/azure-pipelines/jobs/docker-build-push-and-portainer-redeploy.yml@toolkit
+  parameters:
+    imageName: docker.io/lancer1977/api-documents
+    dockerfilePath: WebApi/Dockerfile
+    contextPath: WebApi
+    imageTag: $(Build.BuildId)
+    portainerWebhookVar: PORTAINER_WEBHOOK_URL

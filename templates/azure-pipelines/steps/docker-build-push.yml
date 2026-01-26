@@ -1,0 +1,17 @@
+parameters:
+  imageName: ''
+  dockerfilePath: 'Dockerfile'
+  contextPath: '.'
+  imageTag: '$(Build.BuildId)'
+
+steps:
+- bash: |
+    set -euo pipefail
+    chmod +x scripts/docker/build_push.sh
+    ./scripts/docker/build_push.sh
+  displayName: Docker build + push
+  env:
+    IMAGE_NAME: ${{ parameters.imageName }}
+    DOCKERFILE_PATH: ${{ parameters.dockerfilePath }}
+    CONTEXT_PATH: ${{ parameters.contextPath }}
+    IMAGE_TAG: ${{ parameters.imageTag }}

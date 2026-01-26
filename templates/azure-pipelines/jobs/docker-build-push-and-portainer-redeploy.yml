@@ -1,0 +1,25 @@
+parameters:
+  imageName: ''
+  dockerfilePath: 'Dockerfile'
+  contextPath: '.'
+  imageTag: '$(Build.BuildId)'
+  portainerWebhookVar: 'PORTAINER_WEBHOOK_URL'
+
+jobs:
+- job: build_push_redeploy
+  displayName: Build, Push, Redeploy
+  pool:
+    name: Default
+  steps:
+  - checkout: self
+
+  - template: ../steps/docker-build-push.yml
+    parameters:
+      imageName: ${{ parameters.imageName }}
+      dockerfilePath: ${{ parameters.dockerfilePath }}
+      contextPath: ${{ parameters.contextPath }}
+      imageTag: ${{ parameters.imageTag }}
+
+  - template: ../steps/portainer-webhook.yml
+    parameters:
+      webhookVar: ${{ parameters.portainerWebhookVar }}
